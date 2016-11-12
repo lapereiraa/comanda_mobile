@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+        <meta charset="utf-8">
+        <link rel="stylesheet"  href="css/materialize.css">
+        <title></title>
+    </head>
+
+    <body bgcolor="#000" onload="validaLogin()">
+
+        <form id="mandaNudes" >
+        	<br>
+        	<h3> <center><font color="#fff">111club</font></center> </h3>
+            
+        	<br><br>
+        	<font color="#fff"><center>Digite sua comanda</center></font>
+        	<br>
+        	<hr width="90%">
+            <br>
+            <div class="row">
+                <div class="input-field col s12">
+                    <input id="comanda" type="text" placeholder="Comanda" >
+                    
+                </div>
+                
+            </div>
+
+            <center><button class="btn" style="width: 95%" type="submit">Entrar</button></center><br>
+           center>
+        </form>
+        
+        
+        <script type="text/javascript">
+        function validaLogin(){
+                    var data = "";
+                    
+                    $('#mandaNudes').submit(function(){  //Ao submeter formulário
+                        
+                        var comanda=$('#comanda').val();
+                        var resposta = "";
+                        $.ajax({            //Função AJAX
+                            url:"http://111club.16mb.com/ws/buscarComanda.php?",//Arquivo php
+                            type:"get",    //Método de envio
+                            dataType: "text",
+                            data:"idComanda="+comanda,  
+                            success: function (resultado){            //Sucesso no AJAX
+                        	             //se dados existem, receber o cod do usuario e armazenar no localstorage
+                        	             
+                                         if(resultado != 0){
+                                            //converte JSON para objeto javascript
+                                            resposta = JSON.parse(resultado);
+                                            sessionStorage.setItem("IdComanda", resposta.idComanda);
+                                            var comanda = sessionStorage.getItem('IdComanda');
+                                            console.log(comanda);
+                                            location.href = 'cardapio.html';
+                                            
+                        	             }else if(resultado.valor !=1){
+                        	             	alert("Comanda Incorreta!");
+                                            
+                        	             }
+                            }
+                        });
+                        return false;   //Evita que a página seja atualizada
+                    })
+               
+}
+        </script>
+       
+    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/materialize.min.js" ></script>
+    </body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+        <meta charset="utf-8">
+        <link rel="stylesheet"  href="css/materialize.css">
+        <title></title>
+    </head>
+
+    <body  onload="validaLogin()">
+        <nav>
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo center"><font color="#fff">111club - Cardápio</font> </a>
+            </div>
+         </nav>
+        
+        <form id="mandaNudes" >
+            
+
+            <div class="collection">
+                <a href="cerveja.html"  class="collection-item">Cervejas</a>
+                <a href="drink.html"  class="collection-item">Drinks</a>
+                <a href="dose.html"  class="collection-item">Doses</a>
+                <a href="diverso.html"  class="collection-item">Diversos</a>
+             </div>
+            
+        </form>
+        
+        
+        <script type="text/javascript">
+        function validaLogin(){
+                    var data = "";
+                    var comanda=$('#comanda').val();
+                    var resposta = "";
+                        $.ajax({            //Função AJAX
+                            url:"http://111club.16mb.com/ws/buscarProduto.php?",//Arquivo php
+                            type:"get",    //Método de envio
+                            dataType: "text",
+                            data:"",  
+                            success: function (resultado){            //Sucesso no AJAX
+                        	             //se dados existem, receber o cod do usuario e armazenar no localstorage
+                        	             
+                                         if(resultado != 0){
+                                            //converte JSON para objeto javascript
+                                            resposta = JSON.parse(resultado);
+                                            console.log(resposta);
+                                            //sessionStorage.setItem("Categoria", resposta.idComanda);
+                                            //sessionStorage.setItem("Drinks", resposta.idComanda);
+                                            //sessionStorage.setItem("Bebidas", resposta.idComanda);
+                                            //sessionStorage.setItem("Diversos", resposta.idComanda);
+                                                                                        
+
+                                            var comanda = sessionStorage.getItem('IdComanda');
+                                            console.log(comanda);
+                                            //location.href = 'menu.html';
+                                            
+                        	             }else if(resultado.valor !=1){
+                        	             	alert("Comanda Incorreta!");
+                                            
+                        	             }
+                            }
+                        });
+                        return false;   //Evita que a página seja atualizada
+                    
+               
+}
+        </script>
+       
+    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/materialize.min.js" ></script>
+    </body>
+</html>

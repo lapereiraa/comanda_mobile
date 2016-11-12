@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+        <meta charset="utf-8">
+        <link rel="stylesheet"  href="css/materialize.css">
+        <title></title>
+    </head>
+
+    <body bgcolor="#000" onload="carregaPagina()">
+    <center>
+        <br>
+        
+        <br>
+        <img src="img/logo.jpg">
+        <br><br><br><br><br><br>
+         <div class="preloader-wrapper active">
+            <div class="spinner-layer spinner-white-only">
+              <div class="circle-clipper left">
+                <div class="circle"></div>
+              </div>
+              <div class="gap-patch">
+                <div class="circle"></div>
+              </div>
+              <div class="circle-clipper right">
+                <div class="circle"></div>
+              </div>
+            </div>
+        </div><br>
+        <font color="#fff">Carregando...</font>
+        </center>
+        <script type="text/javascript">
+            function carregaPagina(){
+                window.setTimeout('redireciona()', 3500);
+            }
+            function redireciona(){
+                location.href = 'login.html';
+            }
+        </script>
+       
+    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/materialize.min.js" ></script>
+    </body>
+</html>

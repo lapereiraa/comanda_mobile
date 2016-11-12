@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+        <meta charset="utf-8">
+        <link rel="stylesheet"  href="css/materialize.css">
+        <title></title>
+    </head>
+
+    <body  onload="validaLogin()">
+         
+       <nav>
+            <div class="nav-wrapper">
+              <a href="#" class="brand-logo center"><font color="#fff">111club - Diversos</font> </a>
+            </div>
+         </nav>
+        
+        <form id="mandaNudes" >
+            
+
+            <div  id="dadosCeva" class="collection">
+                
+             </div>
+            
+        </form>
+        
+        
+        <script type="text/javascript">
+         function buscaDose(){
+                    var data = "";
+                    var itens = "";
+                    var resposta = "";
+                    var marca = "";
+                    var descricao = "";
+                    var cod = "";
+                        $.ajax({            //Função AJAX
+                            url:"http://111club.16mb.com/ws/BuscaDiverso.php",//Arquivo php
+                            type:"get",    //Método de envio
+                            dataType: "text",
+                            data:"?",  
+                            success: function (resultado){            //Sucesso no AJAX
+                                         
+                                         if(resultado != 0){
+                                            //converte JSON para objeto javascript
+                                            resposta = JSON.parse(resultado);
+                                            
+                                            for(var i=0; i<resposta.length; i++){
+                                                marca = resposta[i].marca;
+                                                descricao = resposta[i].descricao;
+                                                cod = resposta[i].idProduto;
+                                                //console.log(marca);
+                                                itens +="<a href='"+cod+"'  class='collection-item'>";
+                                                itens += "<b> Descrição:</b> "+descricao+" | ";
+                                                itens += "<b> Marca:</b> "+marca+" ";
+                                                itens +="</a>";
+                                            }
+                                            $("#dadosCeva").html(itens);
+                                            
+                                         }else if(resultado.valor !=1){
+                                            alert("Sem produtos no momento!");
+                                            
+                                         }
+                            }
+                        });
+                        return false;   //Evita que a página seja atualizada
+        }
+        </script>
+       
+    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/materialize.min.js" ></script>
+    </body>
+</html>
