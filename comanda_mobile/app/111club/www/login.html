@@ -51,8 +51,9 @@
                                          if(resultado != 0){
                                             //converte JSON para objeto javascript
                                             resposta = JSON.parse(resultado);
-                                            sessionStorage.setItem("IdComanda", resposta.idComanda);
-                                            var comanda = sessionStorage.getItem('IdComanda');
+                                            localStorage.setItem("IdComanda", resposta.idComanda);
+                                            
+                                            var comanda = localStorage.getItem('IdComanda');
                                             console.log(comanda);
                                             location.href = 'cardapio.html';
                                             
@@ -65,7 +66,7 @@
                         return false;   //Evita que a página seja atualizada
                     })
                
-}
+        }
         </script>
        
     	<script src="js/jquery-2.2.1.min.js" ></script>

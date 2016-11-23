@@ -6,28 +6,65 @@
         <meta charset="utf-8">
         <link rel="stylesheet"  href="css/materialize.css">
         <title></title>
+        <script type="text/javascript">
+            $(document).ready(function() {
+            $('select').material_select();
+  });
+        </script>
     </head>
 
-    <body  onload="buscaDose()">
-       
-       <nav>
+    <body  onload="">
+    
+        <nav>
             <div class="nav-wrapper">
-              <a href="#" class="brand-logo center"><font color="#fff">111club - Doses</font> </a>
+              <a href="#" class="brand-logo center"><font color="#fff">111club - Carrinho</font> </a>
             </div>
          </nav>
         
         <form id="mandaNudes" >
             
 
-            <div  id="dadosCeva" class="collection">
-                
-             </div>
+            <div  id="carrinhoCompra" class="row">
+                <div class="col s12 m6">
+                  <div  class="card blue-grey darken-1">
+                    <div class="card-content white-text" style="background-color:#757575;">
+                      <span id="Comanda" class="card-title">Comanda</span>
+
+                      <p> 
+                          <div class="row">
+                                <div class="col s4">Produto</div>
+                                <div class="col s4">Quantidade</div>
+                                <div class="col s4">Preço</div>
+                          </div>
+                      </p>
+                    </div>
+                    <div class="card-action" style="background-color:#444;">
+                      <div class="row">
+                          <div class="col s6">QTS ITENS:</div>
+                          <div class="col s6">PREÇO TOTAL:
+
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>  
+            </div>
             
+
         </form>
         
+    <select id="select">
+      <option value="" >Choose your option</option>
+      <option value="1">Option 1</option>
+      <option value="2">Option 2</option>
+      <option value="3">Option 3</option>
+    </select>
+    <label>Materialize Select</label>
         
         <script type="text/javascript">
-         function buscaDose(){
+            
+            
+          function buscaCeva(){
                     var data = "";
                     var itens = "";
                     var resposta = "";
@@ -35,7 +72,7 @@
                     var descricao = "";
                     var cod = "";
                         $.ajax({            //Função AJAX
-                            url:"http://111club.16mb.com/ws/BuscaDose.php",//Arquivo php
+                            url:"http://111club.16mb.com/ws/buscaCerveja.php",//Arquivo php
                             type:"get",    //Método de envio
                             dataType: "text",
                             data:"?",  
@@ -49,7 +86,9 @@
                                                 marca = resposta[i].marca;
                                                 descricao = resposta[i].descricao;
                                                 cod = resposta[i].idProduto;
-                                                itens +="<a href='"+cod+"'  class='collection-item'>";
+                                                //sessionStorage.setItem("CodProduto",cod);
+                                                //console.log(marca);
+                                                itens +="<a href='"+mostraId(cod)+"' id="+cod+" class='collection-item'>";
                                                 itens += "<b> Descrição:</b> "+descricao+" | ";
                                                 itens += "<b> Marca:</b> "+marca+" ";
                                                 itens +="</a>";
@@ -64,9 +103,17 @@
                         });
                         return false;   //Evita que a página seja atualizada
         }
+
+        function mostraId(resultado){
+                sessionStorage.setItem("idProduto",resultado);
+                console.log(resultado);
+                alert(resultado);
+            }
         </script>
        
-    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/jquery-2.2.1.min.js" >
+          
+        </script>
     	<script src="js/materialize.min.js" ></script>
     </body>
 </html>

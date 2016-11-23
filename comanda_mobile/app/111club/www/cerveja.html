@@ -3,6 +3,7 @@
 <html>
     <head>
         <meta="viewport" content="width=devide.width,initial-scale=1,height=device-height,target-densitydpi=device-dpi">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <meta charset="utf-8">
         <link rel="stylesheet"  href="css/materialize.css">
         <title></title>
@@ -21,19 +22,61 @@
 
             <div  id="dadosCeva" class="collection">
                 
-             </div>
+            </div>
+
             
         </form>
+       
+       <div class="footer" style="background-color:#000;position:absolute;bottom:0;width:100%;"> 
+            
+                    <div class="row">
+                        <div class="col s6">
+                            <!--<center><a href=""><i class="material-icons">add_shopping_cart</i></a></center>-->
+                            <br><center><button style="background-color:#000;border-color:#000;" onclick="InsereQtd();enviaDados();">
+                                <i class="material-icons" style="color: #fff">add_shopping_cart</i>
+                            </button>
+
+                        </div>
+
+                        <div class="col s6">
+                            <!--<center> <a href=""><i class="material-icons">shopping_basket</i></a></center>-->
+                            <br><center><button style="background-color:#000;border-color:#000;">
+                                <i class="material-icons" style="color: #fff">shopping_basket</i>
+                            </button>
         
+                        </div>
+                        
+                    </div>
+            
+
+       </div>
+
         
         <script type="text/javascript">
-         function buscaCeva(){
+           //evento para capturar id do elemento clicado em html
+           /*var el = document.getElementById('dadosCeva');
+           el.addEventListener('click', function(e) {
+               var id = e.target.id;
+               //console.log(id);
+               console.log(e.target.id);
+               mostraId(e.target.id);
+           });*/
+          //variaveis globais responsáveis por armazenar o id do produto e a quantidade a serem inseridas na comanda
+          var quantidade = "";
+          var codProduto = "";
+          var codi = "";
+          var valore = "";
+
+          //função ajax para buscar os dados e prencher em um tabela
+          function buscaCeva(){
                     var data = "";
                     var itens = "";
                     var resposta = "";
                     var marca = "";
                     var descricao = "";
                     var cod = "";
+                    var preco = "";
+                    //var qtd = "qtd";
                         $.ajax({            //Função AJAX
                             url:"http://111club.16mb.com/ws/buscaCerveja.php",//Arquivo php
                             type:"get",    //Método de envio
@@ -49,14 +92,19 @@
                                                 marca = resposta[i].marca;
                                                 descricao = resposta[i].descricao;
                                                 cod = resposta[i].idProduto;
-                                                //console.log(marca);
-                                                itens +="<a href='"+cod+"'  class='collection-item'>";
-                                                itens += "<b> Descrição:</b> "+descricao+" | ";
-                                                itens += "<b> Marca:</b> "+marca+" ";
-                                                itens +="</a>";
+                                                preco = resposta[i].preco;
+                                                       
+                                                        itens +="<a  id='"+cod+"' onclick='+InsereProd(this.id,"+cod+","+preco+")' class='collection-item'>";
+                                                        itens += "<b> Descrição:</b> "+descricao+" | ";
+                                                        itens += "<b> Marca:</b> "+marca+" | <b> Preço:</b> "+preco+"";
+                                                        itens += "<b> <br> Quantidade: </b> ";
+                                                        itens += "<input id='"+"coman"+cod+"' type='text' >";
+                                                        itens += "</a>";
+                                                
                                             }
                                             $("#dadosCeva").html(itens);
-                                            
+                                            //  <input type="checkbox" id="test5"/>
+      
                                          }else if(resultado.valor !=1){
                                             alert("Sem produtos no momento!");
                                             
@@ -65,9 +113,79 @@
                         });
                         return false;   //Evita que a página seja atualizada
         }
+
+        //pegar id do produto e o valor do produto e armazena em variavel global
+        function InsereProd(resultado,codi,prco){
+                //seta os valores em variaveis globais
+                codProduto = resultado;
+                cod = codi;
+                valore = prco;
+                console.log("function InsereProd");
+                
+        }
+
+        //pega quantidade do produto e armazena em variavel global
+        function InsereQtd(){
+            //os inputs para pegar a quantidade foram nomeados com a string "coman" + o cod do produto
+            var qtd = "coman";
+            qtd += cod;//concatenação de coman + cod, ex: coman + 1 = coman1
+            quantidade = document.getElementById(qtd).value; 
+            //console.log(codProduto);
+            //console.log(quantidade);//console.log(valore);
+            console.log("function InsereQtd");
+                
+        }
+        
+        function enviaDados(){
+            //codProduto,quantidade,valore
+            //http://111club.16mb.com/ws/insereItemVenda.php?idProduto=12&idComanda=1&quantidade=5&preco=2.99
+            var idComanda = localStorage.getItem('IdComanda');
+            console.log(codProduto);console.log(idComanda);console.log(quantidade);console.log(valore);
+            
+            //if verificando se o cliente quer mesmo inserir o produto na comanda
+            if(quantidade >= 0){
+                var decisao = confirm("Deseja adicionar este produto a comanda?");
+                if(decisao){
+                    
+                        $.ajax({            //Função AJAX
+                            url:"http://111club.16mb.com/ws/insereItemVenda.php?",//Arquivo php
+                            type:"post",    //Método de envio
+                            dataType: "text",
+                            data:"idProduto="+codProduto+"&idComanda="+idComanda+"&quantidade="+quantidade+"&preco="+valore,  
+                            success: function (resultado){            //Sucesso no AJAX
+                                         
+                                         if(resultado == 1){
+                                            //converte JSON para objeto javascript
+                                            resposta = JSON.parse(resultado);
+                                            
+                                            //for(var i=0; i<resposta.length; i++){
+                                                //marca = resposta[i].marca;
+                                                console.log("enviado");
+                                            //}
+                                            //$("#dadosCeva").html(itens);
+                                         }else if(resultado.valor !=1){
+                                            alert("Sem produtos no momento!");
+                                         }
+                            }
+                        });
+                        window.location.replace("cardapio.html");
+                        //return false;   //Evita que a página seja atualizada        
+
+
+                        
+                }else{
+                        //cai aqui se o usuario apertar em cancelar na hora de confirmar o pedido
+                        window.location.replace("cardapio.html");
+                        
+                    }
+                }
+
+        }
         </script>
        
-    	<script src="js/jquery-2.2.1.min.js" ></script>
+    	<script src="js/jquery-2.2.1.min.js" >
+         
+        </script>
     	<script src="js/materialize.min.js" ></script>
     </body>
 </html>

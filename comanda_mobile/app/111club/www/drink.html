@@ -8,7 +8,7 @@
         <title></title>
     </head>
 
-    <body  onload="validaLogin()">
+    <body  onload="buscaDose();">
         
         <nav>
             <div class="nav-wrapper">
@@ -49,8 +49,7 @@
                                                 marca = resposta[i].marca;
                                                 descricao = resposta[i].descricao;
                                                 cod = resposta[i].idProduto;
-                                                //console.log(marca);
-                                                itens +="<a href='"+cod+"'  class='collection-item'>";
+                                                itens +="<a href='"+cod+"' id="+cod+" class='collection-item'>";
                                                 itens += "<b> Descrição:</b> "+descricao+" | ";
                                                 itens += "<b> Marca:</b> "+marca+" ";
                                                 itens +="</a>";
@@ -65,6 +64,8 @@
                         });
                         return false;   //Evita que a página seja atualizada
         }
+
+        
         </script>
        
     	<script src="js/jquery-2.2.1.min.js" ></script>

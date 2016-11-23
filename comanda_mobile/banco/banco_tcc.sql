@@ -28,9 +28,7 @@ create table produto(
 create table comanda(
     idComanda int primary key auto_increment,
 	valor int,
-	idItem int,
 	idCliente int,
-	foreign key(idItem) references item_venda(idItem),
 	foreign key(idCliente) references cliente(idCliente)
 );
 
@@ -40,6 +38,9 @@ create table item_venda(
 	quantidade int,
 	idProduto int,
 	preco float,
-	foreign key(idProduto) references produto(idProduto)
+	total float,
+	idComanda int,
+	foreign key(idProduto) references produto(idProduto),
+	foreign key(idComanda) references comanda(idComanda)
 );
 
